@@ -404,9 +404,11 @@ impl Future for MidiInputTask {
     ) -> std::task::Poll<Self::Output> {
         if self.input.is_none() && self.connection.is_none() {
             self.input = midir::MidiInput::new(self.settings.client_name).ok();
-            self.sender
-                .send(get_available_ports(self.input.as_ref().unwrap()))
-                .unwrap();
+            if let Some(input) = self.input.as_ref() {
+                let _ = self.sender.send(get_available_ports(input));
+            } else {
+                let _ = self.sender.send(Reply::AvailablePorts(Vec::new()));
+            }
         }
 
         if let Ok(msg) = self.receiver.recv() {
