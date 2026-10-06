@@ -116,10 +116,10 @@ fn spawn_note(
                 y_reset: pos.y,
             },
         ))
-        .observe(|click: On<Pointer<Press>>, mut commands: Commands| {
+        .observe(|click: On<PointerPress>, mut commands: Commands| {
             commands.entity(click.event().entity).insert(PressedKey);
         })
-        .observe(|release: On<Pointer<Release>>, mut commands: Commands| {
+        .observe(|release: On<PointerRelease>, mut commands: Commands| {
             commands
                 .entity(release.event().entity)
                 .remove::<PressedKey>();

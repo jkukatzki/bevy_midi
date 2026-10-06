@@ -4,7 +4,7 @@ use bevy::prelude::*;
 use bevy_egui::{
     EguiContexts, EguiPlugin, EguiPrimaryContextPass,
     egui::{
-        self, Color32, ColorImage, ImageButton, Key, TextureHandle, TextureOptions, Ui,
+        self, Color32, ColorImage, Key, TextureHandle, TextureOptions, Ui,
         load::SizedTexture,
     },
 };
@@ -274,7 +274,7 @@ impl PianoRoll {
                     let color = self.get_key_texture_tint(note, index);
 
                     let button_top =
-                        ImageButton::new(SizedTexture::new(texture_id, TOP_KEY_SIZE)).tint(color);
+                        egui::Button::image(egui::Image::new(SizedTexture::new(texture_id, TOP_KEY_SIZE)).tint(color));
                     if ui.add(button_top).clicked() {
                         //sync.trigger_note(index, selected_instrument);
                         println!("Pressed {}{}", KEY_RANGE[index % 12], index / 12);
@@ -294,8 +294,7 @@ impl PianoRoll {
                         let tint = self.get_key_texture_tint(note, index);
 
                         let button_bottom =
-                            ImageButton::new(SizedTexture::new(texture_id, BOTTOM_KEY_SIZE))
-                                .tint(tint);
+                            egui::Button::image(egui::Image::new(SizedTexture::new(texture_id, BOTTOM_KEY_SIZE)).tint(tint));
 
                         if ui.add(button_bottom).clicked() {
                             //sync.trigger_note(index, selected_instrument);
