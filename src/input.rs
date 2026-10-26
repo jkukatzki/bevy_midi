@@ -306,6 +306,11 @@ impl MidiInputTask {
                         &port,
                         self.settings.port_name,
                         move |stamp, message, _| {
+                            // Same filter as the initial connection: program change,
+                            // channel pressure and realtime messages are shorter.
+                            if message.len() != 3 {
+                                return;
+                            }
                             let _ = s.send(Reply::Midi(MidiData {
                                 stamp,
                                 message: [message[0], message[1], message[2]].into(),
